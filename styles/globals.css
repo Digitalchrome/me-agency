@@ -1,0 +1,340 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+ * Variables CSS pour le thème
+ * CSS variables for theming
+ */
+@layer base {
+  :root {
+    /* Colors */
+    --color-background: 255 255 255;
+    --color-foreground: 0 0 0;
+    --color-accent: 210 100% 50%;
+    --electric-blue: 210 100% 50%;
+    
+    /* Spacing */
+    --spacing-brutal: 2.5rem;
+
+    /* Borders */
+    --border-brutal: 4px;
+    
+    /* Shadows */
+    --shadow-brutal: 10px 10px 0px 0px rgba(0,0,0,1);
+    --shadow-brutal-hover: 15px 15px 0px 0px rgba(0,0,0,1);
+  }
+
+  .dark {
+    --color-background: 15 15 15;
+    --color-foreground: 255 255 255;
+    --shadow-brutal: 10px 10px 0px 0px rgba(255,255,255,1);
+    --shadow-brutal-hover: 15px 15px 0px 0px rgba(255,255,255,1);
+  }
+
+  * {
+    @apply border-black dark:border-white;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-white dark:bg-dark-grey text-black dark:text-white;
+    @apply font-sans antialiased overflow-x-hidden;
+    font-feature-settings:
+      'liga' 1,
+      'calt' 1;
+  }
+
+  /* Noise texture overlay / Superposition de texture grain */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 9999;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+
+  .dark body::before {
+    opacity: 0.05;
+  }
+
+  /* Brutalist typography / Typographie brutaliste */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-editorial font-bold;
+    letter-spacing: -0.02em;
+  }
+
+  /* Focus styles for accessibility / Styles de focus pour l'accessibilité */
+  *:focus-visible {
+    @apply outline-none ring-4 ring-electric-blue ring-offset-2 ring-offset-white dark:ring-offset-dark-grey;
+  }
+
+  /* Selection styles / Styles de sélection */
+  ::selection {
+    @apply bg-electric-blue text-white;
+  }
+}
+
+/**
+ * Composants réutilisables
+ * Reusable components
+ */
+@layer components {
+  /* Brutalist button / Bouton brutaliste */
+  .btn-brutal {
+    @apply px-6 py-3 border-3 border-black dark:border-white;
+    @apply font-bold uppercase tracking-wider;
+    @apply transition-all duration-150;
+    @apply shadow-brutal hover:shadow-brutal-hover;
+    @apply hover:translate-x-1 hover:translate-y-1;
+  }
+
+  .btn-brutal-primary {
+    @apply btn-brutal bg-black dark:bg-white text-white dark:text-black;
+  }
+
+  .btn-brutal-secondary {
+    @apply btn-brutal bg-white dark:bg-dark-grey text-black dark:text-white;
+  }
+
+  /* Glassmorphism card / Carte glassmorphisme */
+  .glass-card {
+    @apply backdrop-blur-lg bg-white/80 dark:bg-dark-grey/80;
+    @apply border border-black/10 dark:border-white/10;
+    @apply shadow-glass;
+  }
+
+  /* Brutalist grid visible / Grille brutaliste visible */
+  .brutal-grid {
+    background-image:
+      linear-gradient(rgba(0, 0, 0, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.07) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-attachment: fixed;
+  }
+
+  .dark .brutal-grid {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  }
+
+  /* Model card with 3D effect / Carte modèle avec effet 3D */
+  .model-card {
+    @apply relative overflow-hidden;
+    @apply border-3 border-black dark:border-white;
+    @apply transition-all duration-300;
+    @apply bg-white dark:bg-dark-grey;
+  }
+
+  .model-card:hover {
+    @apply shadow-brutal;
+    transform: translate(-6px, -6px);
+  }
+
+  .model-card:active {
+    transform: translate(-2px, -2px);
+    @apply shadow-none;
+  }
+
+  /* Skeleton loader / Chargeur squelette */
+  .skeleton {
+    @apply animate-shimmer bg-gradient-to-r from-light-grey via-white to-light-grey;
+    @apply dark:from-dark-grey dark:via-gray-800 dark:to-dark-grey;
+    background-size: 1000px 100%;
+  }
+
+  /* Glitch text effect / Effet texte glitch */
+  .glitch-text {
+    @apply relative inline-block;
+  }
+
+  .glitch-text:hover::before,
+  .glitch-text:hover::after {
+    content: attr(data-text);
+    @apply absolute top-0 left-0 w-full h-full;
+  }
+
+  .glitch-text:hover::before {
+    @apply text-electric-blue;
+    animation: glitch-1 0.3s infinite;
+    clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+  }
+
+  .glitch-text:hover::after {
+    @apply text-error;
+    animation: glitch-2 0.3s infinite;
+    clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+  }
+
+  @keyframes glitch-1 {
+    0%,
+    100% {
+      transform: translate(0);
+    }
+
+    33% {
+      transform: translate(-2px, 2px);
+    }
+
+    66% {
+      transform: translate(2px, -2px);
+    }
+  }
+
+  @keyframes glitch-2 {
+    0%,
+    100% {
+      transform: translate(0);
+    }
+
+    33% {
+      transform: translate(2px, -2px);
+    }
+
+    66% {
+      transform: translate(-2px, 2px);
+    }
+  }
+
+  /* Marquee animation / Animation de défilement */
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-marquee {
+    animation: marquee 40s linear infinite;
+  }
+
+  /* Status badge / Badge de statut */
+  .status-badge {
+    @apply inline-flex items-center px-3 py-1;
+    @apply border-2 border-black dark:border-white;
+    @apply font-mono text-xs uppercase tracking-wider;
+  }
+
+  /* Deconstructed navigation / Navigation déconstruite */
+  .nav-brutal {
+    @apply fixed top-0 left-0 right-0;
+    @apply border-b-3 border-black dark:border-white;
+    @apply bg-white dark:bg-dark-grey;
+    @apply z-50;
+  }
+}
+
+/**
+ * Utilitaires personnalisés
+ * Custom utilities
+ */
+@layer utilities {
+  /* Text stroke for brutalist typography / Contour de texte pour typographie brutaliste */
+  .text-stroke {
+    -webkit-text-stroke: 2px currentColor;
+    paint-order: stroke fill;
+  }
+
+  /* Clip path utilities / Utilitaires de clip-path */
+  .clip-brutal {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+  }
+
+  /* Grid line overlay / Superposition de lignes de grille */
+  .grid-lines {
+    position: relative;
+  }
+
+  .grid-lines::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+  }
+
+  /* Measurement overlay (for model stats) / Superposition de mesures (pour stats modèle) */
+  .measurement-lines {
+    position: relative;
+  }
+
+  .measurement-lines::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 9px,
+      rgba(0, 0, 0, 0.1) 9px,
+      rgba(0, 0, 0, 0.1) 10px
+    );
+    pointer-events: none;
+  }
+
+  /* Anti-grid layout helper / Aide pour layout anti-grille */
+  .anti-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+  }
+
+  .anti-grid > * {
+    transform: rotate(calc(var(--rotation, 0) * 1deg));
+  }
+
+  /* 3D transform utilities / Utilitaires de transformation 3D */
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+}
+
+/**
+ * Animations globales
+ * Global animations
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .animate-on-scroll {
+    @apply opacity-0 translate-y-8;
+    transition:
+      opacity 0.6s ease-out,
+      transform 0.6s ease-out;
+  }
+
+  .animate-on-scroll.in-view {
+    @apply opacity-100 translate-y-0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
