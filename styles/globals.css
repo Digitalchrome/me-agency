@@ -237,6 +237,82 @@
     @apply border-b-3 border-black dark:border-white;
     @apply bg-white dark:bg-dark-grey;
     @apply z-50;
+    transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
+  }
+
+  .nav-brutal.nav-scrolled {
+    @apply bg-white/80 dark:bg-dark-grey/80;
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+  }
+
+  /* Hero gradient animation / Animation de fond de la section héro */
+  .hero-gradient {
+    background: linear-gradient(
+      -45deg,
+      #000000,
+      #1a1a2e,
+      #16213e,
+      #0f3460,
+      #000000
+    );
+    background-size: 400% 400%;
+    animation: hero-gradient-shift 15s ease infinite;
+  }
+
+  .dark .hero-gradient {
+    background: linear-gradient(
+      -45deg,
+      #000000,
+      #0a0a1a,
+      #0d1b2a,
+      #1b2838,
+      #000000
+    );
+    background-size: 400% 400%;
+    animation: hero-gradient-shift 15s ease infinite;
+  }
+
+  @keyframes hero-gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Text gradient utility / Dégradé de texte */
+  .text-gradient {
+    background: linear-gradient(135deg, hsl(210, 100%, 50%), hsl(280, 80%, 60%), hsl(210, 100%, 50%));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: text-gradient-shift 4s linear infinite;
+  }
+
+  @keyframes text-gradient-shift {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+  }
+
+  /* Animated underline / Soulignement animé */
+  .animated-underline {
+    position: relative;
+    display: inline-block;
+  }
+
+  .animated-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: hsl(210, 100%, 50%);
+    transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .animated-underline:hover::after {
+    width: 100%;
   }
 }
 

@@ -7,6 +7,8 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import JsonLd from '@/components/SEO/JsonLd';
 import CookieBanner from '@/components/CookieBanner';
+import ScrollToTop from '@/components/ScrollToTop';
+import ScrollProgress from '@/components/ScrollProgress';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -112,6 +114,8 @@ export default function RootLayout({
             {/* Footer / Pied de page */}
             <Footer />
             <CookieBanner />
+            <ScrollToTop />
+            <ScrollProgress />
           </div>
         </ThemeProvider>
       </body>

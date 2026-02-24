@@ -110,7 +110,27 @@ NEXT_PUBLIC_SANITY_API_VERSION=2024-05-01
 # Optional
 SANITY_API_TOKEN=your-token-here
 NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
+
+# Admin demo access (optional, defaults to demo-admin)
+ADMIN_ACCESS_TOKEN=demo-admin
 ```
+
+## Admin / Demo Ops
+
+- Admin dashboard: `/admin?token=demo-admin` (or your `ADMIN_ACCESS_TOKEN`)
+- Join queue: `/admin/submissions/join?token=demo-admin`
+- Booking queue: `/admin/submissions/bookings?token=demo-admin`
+- Seed fake submissions:
+  - `POST /api/admin/demo/seed?token=demo-admin`
+- Export CSV:
+  - `/api/admin/exports/join.csv?token=demo-admin`
+  - `/api/admin/exports/bookings.csv?format=mega-db&token=demo-admin`
+
+### Local Storage Notes
+
+- Submissions are stored in `data/submissions/*.json` (demo/dev only)
+- CSV exports are written to `data/exports/`
+- This file-based storage is not suitable for production/serverless persistence
 
 ## 📦 Tech Stack
 

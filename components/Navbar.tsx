@@ -1,27 +1,44 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import ThemeToggle from '@/components/ThemeToggle';
 import { motion, AnimatePresence } from 'framer-motion';
 
 /**
- * Navbar component for ME Modeling Agency
- * Design: Brutalist, deconstructed, responsive with mobile menu
+ * Navbar avec effet glassmorphisme au scroll
+ * Navbar with glassmorphism effect on scroll
  */
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navLinks = [
     { name: 'Models', href: '/#roster' },
     { name: 'Agency', href: '/agency' },
     { name: 'Journal', href: '/journal' },
+    { name: 'Discover', href: '/discover' },
     { name: 'About', href: '/about' },
     { name: 'Contact', href: '/contact' },
   ];
 
+  const isActive = (href: string) => {
+    if (href === '/#roster') return pathname === '/';
+    return pathname === href;
+  };
+
   return (
-    <nav className="nav-brutal">
+    <nav className={`nav-brutal ${scrolled ? 'nav-scrolled' : ''}`}>
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
         <Link
           href="/"
@@ -37,7 +54,11 @@ export default function Navbar() {
               <Link
                 key={link.name}
                 href={link.href}
-                className="font-mono text-sm uppercase tracking-[0.2em] hover:text-electric-blue border-b-2 border-transparent hover:border-electric-blue transition-all"
+                className={`font-mono text-sm uppercase tracking-[0.2em] transition-all animated-underline ${
+                  isActive(link.href)
+                    ? 'text-electric-blue font-bold'
+                    : 'hover:text-electric-blue'
+                }`}
               >
                 {link.name}
               </Link>
@@ -88,23 +109,39 @@ export default function Navbar() {
             className="md:hidden border-t-3 border-black dark:border-white bg-white dark:bg-dark-grey overflow-hidden"
           >
             <div className="container mx-auto px-4 py-8 flex flex-col gap-6">
-              {navLinks.map((link) => (
-                <Link
+              {navLinks.map((link, i) => (
+                <motion.div
                   key={link.name}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="font-mono text-lg uppercase tracking-[0.2em] hover:text-electric-blue transition-colors py-2 border-b border-black/10 dark:border-white/10"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
                 >
-                  {link.name}
-                </Link>
+                  <Link
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    className={`font-mono text-lg uppercase tracking-[0.2em] transition-colors py-2 border-b border-black/10 dark:border-white/10 block ${
+                      isActive(link.href)
+                        ? 'text-electric-blue font-bold'
+                        : 'hover:text-electric-blue'
+                    }`}
+                  >
+                    {link.name}
+                  </Link>
+                </motion.div>
               ))}
-              <Link
-                href="/join"
-                onClick={() => setMobileOpen(false)}
-                className="btn-brutal-primary text-center mt-4"
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
               >
-                Apply Now
-              </Link>
+                <Link
+                  href="/join"
+                  onClick={() => setMobileOpen(false)}
+                  className="btn-brutal-primary text-center mt-4 block"
+                >
+                  Apply Now
+                </Link>
+              </motion.div>
             </div>
           </motion.div>
         )}

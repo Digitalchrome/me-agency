@@ -2,6 +2,7 @@
 
 import type { Model } from '@/lib/types';
 import { urlFor } from '@/lib/sanity';
+import { MODEL_COVERS } from '@/lib/demoImages';
 import Image from 'next/image';
 import Link from 'next/link';
 import Badge from '@/components/ui/Badge';
@@ -25,12 +26,8 @@ export default function ModelCard({ model, index = 0 }: ModelCardProps) {
   // Demo mode: use enhanced placeholder image
   const isDemoMode = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID === 'demo-project';
   
-  // Couleurs variées pour les placeholders
-  const colors = ['1a1a1a', '2d2d2d', '1f1f1f', '252525', '1c1c1c', '232323'];
-  const bgColor = colors[index % colors.length];
-  
   const imageUrl = isDemoMode
-    ? `https://placehold.co/800x1200/${bgColor}/ffffff?text=${encodeURIComponent(model.name)}&font=montserrat`
+    ? (MODEL_COVERS[model.slug.current] ?? `https://placehold.co/800x1200/1a1a1a/ffffff?text=${encodeURIComponent(model.name)}`)
     : urlFor(model.coverImage).width(800).height(1200).url();
 
   return (

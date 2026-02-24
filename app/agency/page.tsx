@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import { TEAM_PHOTOS, BRAND_IMAGES } from '@/lib/demoImages';
 
 export const metadata: Metadata = {
   title: 'The Agency',
@@ -53,7 +54,7 @@ export default function AgencyPage() {
           {/* Agency photo placeholder */}
           <div className="aspect-[4/3] border-3 border-black dark:border-white overflow-hidden shadow-brutal">
             <Image
-              src="https://placehold.co/800x600/1a1a1a/ffffff?text=ME+Agency+HQ&font=montserrat"
+              src={BRAND_IMAGES.agencyHQ}
               alt="ME Agency Headquarters in Lille"
               width={800}
               height={600}
@@ -103,7 +104,7 @@ export default function AgencyPage() {
             >
               <div className="aspect-square overflow-hidden bg-light-grey dark:bg-dark-grey">
                 <Image
-                  src={`https://placehold.co/600x600/2c2c2c/ffffff?text=${encodeURIComponent(member.name.split(' ')[0] ?? member.name)}&font=montserrat`}
+                  src={TEAM_PHOTOS[member.name.split(' ')[0] ?? member.name] ?? `https://placehold.co/600x600/2c2c2c/ffffff?text=${encodeURIComponent(member.name.split(' ')[0] ?? member.name)}`}
                   alt={member.name}
                   width={600}
                   height={600}

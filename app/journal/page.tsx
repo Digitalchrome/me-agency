@@ -1,74 +1,14 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import { JOURNAL_POSTS } from '@/lib/journalData';
 
 export const metadata: Metadata = {
   title: 'Journal',
   description: 'Stories, editorials, and observations from ME Modeling Agency.',
 };
 
-const POSTS = [
-  {
-    id: 1,
-    title: 'The Future of Inclusive Fashion',
-    date: 'FEB 2026',
-    category: 'THOUGHTS',
-    author: 'Gabriel Laurent',
-    readTime: '5 min',
-    excerpt: 'How the industry is finally embracing what we have always believed: beauty has no single definition.',
-    image: 'https://placehold.co/800x500/1a1a1a/ffffff?text=Inclusive+Fashion&font=montserrat',
-  },
-  {
-    id: 2,
-    title: 'Lille: A New Creative Hub',
-    date: 'FEB 2026',
-    category: 'CULTURE',
-    author: 'Camille Dubois',
-    readTime: '4 min',
-    excerpt: 'Why the capital of the Hauts-de-France is becoming the next epicenter of European creative talent.',
-    image: 'https://placehold.co/800x500/2c2c2c/e0e0e0?text=Lille+Creative&font=montserrat',
-  },
-  {
-    id: 3,
-    title: 'Behind the Scenes: Summer 26',
-    date: 'JAN 2026',
-    category: 'EDITORIAL',
-    author: 'Marcus Williams',
-    readTime: '3 min',
-    excerpt: 'A raw look at our latest editorial campaign. No retouching, no compromises.',
-    image: 'https://placehold.co/800x500/0d0d0d/cccccc?text=BTS+Summer+26&font=montserrat',
-  },
-  {
-    id: 4,
-    title: 'The Brutalist Aesthetic in Fashion',
-    date: 'JAN 2026',
-    category: 'DESIGN',
-    author: 'Sofia Rossi',
-    readTime: '6 min',
-    excerpt: 'Exploring the intersection of architectural brutalism and contemporary fashion photography.',
-    image: 'https://placehold.co/800x500/1f1f2e/c8c8ff?text=Brutalist+Fashion&font=montserrat',
-  },
-  {
-    id: 5,
-    title: 'Diversity Report 2026',
-    date: 'JAN 2026',
-    category: 'DATA',
-    author: 'ME Agency',
-    readTime: '8 min',
-    excerpt: 'Our first annual report on diversity, inclusion, and representation across the fashion industry.',
-    image: 'https://placehold.co/800x500/2e1f1f/ffc8c8?text=Diversity+Report&font=montserrat',
-  },
-  {
-    id: 6,
-    title: 'What Makes a Model in 2026',
-    date: 'DEC 2025',
-    category: 'THOUGHTS',
-    author: 'Gabriel Laurent',
-    readTime: '4 min',
-    excerpt: 'It is not about measurements anymore. It is about energy, presence, and the courage to be yourself.',
-    image: 'https://placehold.co/800x500/1a1a2e/e0e0ff?text=Modern+Model&font=montserrat',
-  },
-];
+const POSTS = JOURNAL_POSTS;
 
 export default function JournalPage() {
   return (
@@ -90,7 +30,7 @@ export default function JournalPage() {
         if (!featured) return null;
         return (
           <article className="mb-20 group">
-            <Link href="#" className="grid grid-cols-1 md:grid-cols-12 gap-8 border-3 border-black dark:border-white overflow-hidden hover:shadow-brutal transition-all duration-300">
+            <Link href={`/journal/${featured.slug}`} className="grid grid-cols-1 md:grid-cols-12 gap-8 border-3 border-black dark:border-white overflow-hidden hover:shadow-brutal transition-all duration-300">
               <div className="md:col-span-7 aspect-[16/9] md:aspect-auto overflow-hidden">
                 <Image
                   src={featured.image}
@@ -128,7 +68,7 @@ export default function JournalPage() {
             key={post.id}
             className="group border-3 border-black dark:border-white overflow-hidden hover:shadow-brutal hover:-translate-y-2 transition-all duration-300"
           >
-            <Link href="#">
+            <Link href={`/journal/${post.slug}`}>
               <div className="aspect-[16/10] overflow-hidden">
                 <Image
                   src={post.image}

@@ -1,33 +1,27 @@
 import type { MetadataRoute } from 'next';
 import { dataService } from '@/lib/data-service';
+import { JOURNAL_POSTS } from '@/lib/journalData';
+import { INDEXED_PAGES } from '@/lib/siteIndex';
 
-/**
- * Générateur de sitemap dynamique pour Next.js 15
- * Dynamic sitemap generator for Next.js 15
- */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://me-agency.com';
 
-  // Routes statiques
-  const staticRoutes = [
-    '',
-    '/agency',
-    '/journal',
-    '/about',
-    '/join',
-    '/booking',
-    '/contact',
-    '/gdpr',
-    '/privacy',
-    '/terms',
-  ].map((route) => ({
-    url: `${baseUrl}${route}`,
+  const staticRoutes = INDEXED_PAGES.filter(
+    (page) => page.indexable && !page.path.startsWith('/journal/')
+  ).map((page) => ({
+    url: `${baseUrl}${page.path}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
-    priority: route === '' ? 1 : 0.8,
+    priority: page.path === '/' ? 1 : page.path === '/discover' ? 0.5 : 0.8,
   }));
 
-  // Routes dynamiques pour les modèles
+  const journalRoutes = JOURNAL_POSTS.map((post) => ({
+    url: `${baseUrl}/journal/${post.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
+  }));
+
   const models = await dataService.getAllModels();
   const modelRoutes = models.map((model) => ({
     url: `${baseUrl}/${model.slug.current}`,
@@ -36,5 +30,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  return [...staticRoutes, ...modelRoutes];
+  return [...staticRoutes, ...journalRoutes, ...modelRoutes];
 }
+

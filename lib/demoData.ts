@@ -1,39 +1,117 @@
-import type { Model } from './types';
+import type { Model, ModelCategory, ModelGender, ModelStatus } from './types';
 
-/**
- * Données de démo réalistes pour le MVP
- * Realistic demo data for the MVP prototype
- *
- * Les images utilisent placehold.co avec des couleurs variées
- * Images use placehold.co with varied color palettes
- */
+type DemoImage = {
+  _type: 'image';
+  asset: {
+    _ref: string;
+    _type: 'reference';
+  };
+  _demoUrl: string;
+};
 
-// Helper pour créer des images portfolio fictives
-// Helper to create fake portfolio images
-function fakePortfolio(name: string, count: number) {
-  const palettes = [
-    { bg: '1a1a1a', fg: 'ffffff' },
-    { bg: '2c2c2c', fg: 'e0e0e0' },
-    { bg: '0d0d0d', fg: 'cccccc' },
-    { bg: '1f1f2e', fg: 'c8c8ff' },
-    { bg: '2e1f1f', fg: 'ffc8c8' },
-  ];
-  return Array.from({ length: count }, (_, i) => ({
-    _type: 'image' as const,
+type DemoSeed = {
+  id: string;
+  name: string;
+  slug: string;
+  status: ModelStatus;
+  gender: ModelGender;
+  category: ModelCategory;
+  location: string;
+  height: number;
+  bust: number;
+  waist: number;
+  hips: number;
+  shoe: number;
+  hair: string;
+  eyes: string;
+  portfolioCount: number;
+  polaroidCount?: number;
+};
+
+const PORTFOLIO_PALETTES = [
+  { bg: '1a1a1a', fg: 'ffffff' },
+  { bg: '2c2c2c', fg: 'e0e0e0' },
+  { bg: '101820', fg: 'f7f7f7' },
+  { bg: '1f1f2e', fg: 'c8c8ff' },
+  { bg: '2e1f1f', fg: 'ffc8c8' },
+  { bg: '1a2e25', fg: 'ccffe8' },
+];
+
+const POLAROID_PALETTES = [
+  { bg: 'f4f4f4', fg: '111111' },
+  { bg: 'efefef', fg: '1a1a1a' },
+  { bg: 'f8f0ea', fg: '222222' },
+];
+const DEFAULT_PORTFOLIO_PALETTE = PORTFOLIO_PALETTES[0]!;
+const DEFAULT_POLAROID_PALETTE = POLAROID_PALETTES[0]!;
+
+function makeDemoImage(label: string, refPrefix: string, index: number, width: number, height: number, palette: { bg: string; fg: string }): DemoImage {
+  return {
+    _type: 'image',
     asset: {
-      _ref: `portfolio-${name.toLowerCase().replace(/\s/g, '-')}-${i}`,
-      _type: 'reference' as const,
+      _ref: `${refPrefix}-${index}`,
+      _type: 'reference',
     },
-    // Metadata used by demo mode rendering
-    _demoUrl: `https://placehold.co/800x${i % 2 === 0 ? '1200' : '800'}/${palettes[i % palettes.length]?.bg ?? '1a1a1a'}/${palettes[i % palettes.length]?.fg ?? 'ffffff'}?text=${encodeURIComponent(name + ' #' + (i + 1))}&font=montserrat`,
-  }));
+    _demoUrl: `https://placehold.co/${width}x${height}/${palette.bg}/${palette.fg}?text=${encodeURIComponent(label)}&font=montserrat`,
+  };
 }
 
-export const DEMO_MODELS: Model[] = [
+function fakePortfolio(name: string, count: number): DemoImage[] {
+  return Array.from({ length: count }, (_, i) =>
+    makeDemoImage(
+      `${name} Portfolio ${i + 1}`,
+      `portfolio-${name.toLowerCase().replace(/\s+/g, '-')}`,
+      i,
+      800,
+      i % 2 === 0 ? 1200 : 800,
+      PORTFOLIO_PALETTES[i % PORTFOLIO_PALETTES.length] ?? DEFAULT_PORTFOLIO_PALETTE
+    )
+  );
+}
+
+function fakePolaroids(name: string, count: number): DemoImage[] {
+  return Array.from({ length: count }, (_, i) =>
+    makeDemoImage(
+      `${name} Polaroid ${i + 1}`,
+      `polaroid-${name.toLowerCase().replace(/\s+/g, '-')}`,
+      i,
+      900,
+      1200,
+      POLAROID_PALETTES[i % POLAROID_PALETTES.length] ?? DEFAULT_POLAROID_PALETTE
+    )
+  );
+}
+
+function makeModel(seed: DemoSeed): Model {
+  return {
+    _id: seed.id,
+    name: seed.name,
+    slug: { current: seed.slug },
+    status: seed.status,
+    gender: seed.gender,
+    category: seed.category,
+    location: seed.location,
+    height: seed.height,
+    bust: seed.bust,
+    waist: seed.waist,
+    hips: seed.hips,
+    shoe: seed.shoe,
+    hair: seed.hair,
+    eyes: seed.eyes,
+    portfolio: fakePortfolio(seed.name, seed.portfolioCount),
+    polaroids: fakePolaroids(seed.name, seed.polaroidCount ?? 3),
+    coverImage: {
+      _type: 'image',
+      asset: { _ref: `cover-${seed.slug}`, _type: 'reference' },
+    },
+  };
+}
+
+const DEMO_SEEDS: DemoSeed[] = [
   {
-    _id: 'demo-1',
+    id: 'demo-1',
     name: 'Amara Diallo',
-    slug: { current: 'amara-diallo' },
+    slug: 'amara-diallo',
     status: 'Available',
     gender: 'Female',
     category: 'Mainboard',
@@ -45,17 +123,12 @@ export const DEMO_MODELS: Model[] = [
     shoe: 39,
     hair: 'Black',
     eyes: 'Brown',
-    portfolio: fakePortfolio('Amara Diallo', 5),
-    polaroids: [],
-    coverImage: {
-      _type: 'image',
-      asset: { _ref: 'placeholder', _type: 'reference' },
-    },
+    portfolioCount: 5,
   },
   {
-    _id: 'demo-2',
+    id: 'demo-2',
     name: 'Luca Bianchi',
-    slug: { current: 'luca-bianchi' },
+    slug: 'luca-bianchi',
     status: 'Available',
     gender: 'Male',
     category: 'Mainboard',
@@ -67,17 +140,12 @@ export const DEMO_MODELS: Model[] = [
     shoe: 43,
     hair: 'Brown',
     eyes: 'Green',
-    portfolio: fakePortfolio('Luca Bianchi', 4),
-    polaroids: [],
-    coverImage: {
-      _type: 'image',
-      asset: { _ref: 'placeholder', _type: 'reference' },
-    },
+    portfolioCount: 4,
   },
   {
-    _id: 'demo-3',
+    id: 'demo-3',
     name: 'Yuki Tanaka',
-    slug: { current: 'yuki-tanaka' },
+    slug: 'yuki-tanaka',
     status: 'Travel',
     gender: 'Female',
     category: 'Development',
@@ -89,17 +157,12 @@ export const DEMO_MODELS: Model[] = [
     shoe: 37,
     hair: 'Black',
     eyes: 'Dark Brown',
-    portfolio: fakePortfolio('Yuki Tanaka', 4),
-    polaroids: [],
-    coverImage: {
-      _type: 'image',
-      asset: { _ref: 'placeholder', _type: 'reference' },
-    },
+    portfolioCount: 4,
   },
   {
-    _id: 'demo-4',
-    name: 'Elias Nordström',
-    slug: { current: 'elias-nordstrom' },
+    id: 'demo-4',
+    name: 'Elias Nordstrom',
+    slug: 'elias-nordstrom',
     status: 'Available',
     gender: 'Male',
     category: 'Mainboard',
@@ -111,17 +174,12 @@ export const DEMO_MODELS: Model[] = [
     shoe: 44,
     hair: 'Blonde',
     eyes: 'Blue',
-    portfolio: fakePortfolio('Elias Nordström', 5),
-    polaroids: [],
-    coverImage: {
-      _type: 'image',
-      asset: { _ref: 'placeholder', _type: 'reference' },
-    },
+    portfolioCount: 5,
   },
   {
-    _id: 'demo-5',
+    id: 'demo-5',
     name: 'Zara Okonkwo',
-    slug: { current: 'zara-okonkwo' },
+    slug: 'zara-okonkwo',
     status: 'Available',
     gender: 'Female',
     category: 'Mainboard',
@@ -133,17 +191,12 @@ export const DEMO_MODELS: Model[] = [
     shoe: 40,
     hair: 'Braids',
     eyes: 'Brown',
-    portfolio: fakePortfolio('Zara Okonkwo', 5),
-    polaroids: [],
-    coverImage: {
-      _type: 'image',
-      asset: { _ref: 'placeholder', _type: 'reference' },
-    },
+    portfolioCount: 5,
   },
   {
-    _id: 'demo-6',
+    id: 'demo-6',
     name: 'Milo Fontaine',
-    slug: { current: 'milo-fontaine' },
+    slug: 'milo-fontaine',
     status: 'Available',
     gender: 'Male',
     category: 'Classic',
@@ -155,17 +208,12 @@ export const DEMO_MODELS: Model[] = [
     shoe: 42,
     hair: 'Dark Brown',
     eyes: 'Hazel',
-    portfolio: fakePortfolio('Milo Fontaine', 4),
-    polaroids: [],
-    coverImage: {
-      _type: 'image',
-      asset: { _ref: 'placeholder', _type: 'reference' },
-    },
+    portfolioCount: 4,
   },
   {
-    _id: 'demo-7',
+    id: 'demo-7',
     name: 'Ines Morel',
-    slug: { current: 'ines-morel' },
+    slug: 'ines-morel',
     status: 'Travel',
     gender: 'Female',
     category: 'Development',
@@ -177,17 +225,12 @@ export const DEMO_MODELS: Model[] = [
     shoe: 38,
     hair: 'Auburn',
     eyes: 'Green',
-    portfolio: fakePortfolio('Ines Morel', 3),
-    polaroids: [],
-    coverImage: {
-      _type: 'image',
-      asset: { _ref: 'placeholder', _type: 'reference' },
-    },
+    portfolioCount: 3,
   },
   {
-    _id: 'demo-8',
+    id: 'demo-8',
     name: 'Kwame Asante',
-    slug: { current: 'kwame-asante' },
+    slug: 'kwame-asante',
     status: 'Available',
     gender: 'Male',
     category: 'Mainboard',
@@ -199,17 +242,12 @@ export const DEMO_MODELS: Model[] = [
     shoe: 43,
     hair: 'Black',
     eyes: 'Dark Brown',
-    portfolio: fakePortfolio('Kwame Asante', 5),
-    polaroids: [],
-    coverImage: {
-      _type: 'image',
-      asset: { _ref: 'placeholder', _type: 'reference' },
-    },
+    portfolioCount: 5,
   },
   {
-    _id: 'demo-9',
+    id: 'demo-9',
     name: 'Sasha Volkov',
-    slug: { current: 'sasha-volkov' },
+    slug: 'sasha-volkov',
     status: 'Unavailable',
     gender: 'Non-Binary',
     category: 'Development',
@@ -221,17 +259,12 @@ export const DEMO_MODELS: Model[] = [
     shoe: 40,
     hair: 'Platinum',
     eyes: 'Grey',
-    portfolio: fakePortfolio('Sasha Volkov', 4),
-    polaroids: [],
-    coverImage: {
-      _type: 'image',
-      asset: { _ref: 'placeholder', _type: 'reference' },
-    },
+    portfolioCount: 4,
   },
   {
-    _id: 'demo-10',
-    name: 'Léa Dubois',
-    slug: { current: 'lea-dubois' },
+    id: 'demo-10',
+    name: 'Lea Dubois',
+    slug: 'lea-dubois',
     status: 'Available',
     gender: 'Female',
     category: 'Classic',
@@ -243,27 +276,153 @@ export const DEMO_MODELS: Model[] = [
     shoe: 39,
     hair: 'Chestnut',
     eyes: 'Blue',
-    portfolio: fakePortfolio('Léa Dubois', 4),
-    polaroids: [],
-    coverImage: {
-      _type: 'image',
-      asset: { _ref: 'placeholder', _type: 'reference' },
-    },
+    portfolioCount: 4,
+  },
+  {
+    id: 'demo-11',
+    name: 'Noah Ben Salem',
+    slug: 'noah-ben-salem',
+    status: 'Available',
+    gender: 'Male',
+    category: 'Development',
+    location: 'Casablanca, Morocco',
+    height: 187,
+    bust: 97,
+    waist: 77,
+    hips: 91,
+    shoe: 43,
+    hair: 'Black',
+    eyes: 'Amber',
+    portfolioCount: 4,
+  },
+  {
+    id: 'demo-12',
+    name: 'Aisha Rahman',
+    slug: 'aisha-rahman',
+    status: 'Travel',
+    gender: 'Female',
+    category: 'Mainboard',
+    location: 'Dubai, UAE',
+    height: 179,
+    bust: 85,
+    waist: 61,
+    hips: 90,
+    shoe: 40,
+    hair: 'Black',
+    eyes: 'Brown',
+    portfolioCount: 5,
+  },
+  {
+    id: 'demo-13',
+    name: 'Mateo Alvarez',
+    slug: 'mateo-alvarez',
+    status: 'Available',
+    gender: 'Male',
+    category: 'Classic',
+    location: 'Madrid, Spain',
+    height: 183,
+    bust: 95,
+    waist: 75,
+    hips: 90,
+    shoe: 42,
+    hair: 'Dark Brown',
+    eyes: 'Brown',
+    portfolioCount: 3,
+  },
+  {
+    id: 'demo-14',
+    name: 'Eden Park',
+    slug: 'eden-park',
+    status: 'Available',
+    gender: 'Non-Binary',
+    category: 'Mainboard',
+    location: 'Seoul, South Korea',
+    height: 181,
+    bust: 87,
+    waist: 63,
+    hips: 90,
+    shoe: 40,
+    hair: 'Jet Black',
+    eyes: 'Dark Brown',
+    portfolioCount: 5,
+  },
+  {
+    id: 'demo-15',
+    name: 'Chloe Martin',
+    slug: 'chloe-martin',
+    status: 'Unavailable',
+    gender: 'Female',
+    category: 'Classic',
+    location: 'Montreal, Canada',
+    height: 174,
+    bust: 82,
+    waist: 60,
+    hips: 87,
+    shoe: 38,
+    hair: 'Blonde',
+    eyes: 'Blue',
+    portfolioCount: 4,
+  },
+  {
+    id: 'demo-16',
+    name: 'Tariq Johnson',
+    slug: 'tariq-johnson',
+    status: 'Available',
+    gender: 'Male',
+    category: 'Mainboard',
+    location: 'Los Angeles, USA',
+    height: 189,
+    bust: 101,
+    waist: 81,
+    hips: 96,
+    shoe: 44,
+    hair: 'Black',
+    eyes: 'Brown',
+    portfolioCount: 5,
+  },
+  {
+    id: 'demo-17',
+    name: 'Mina Kovac',
+    slug: 'mina-kovac',
+    status: 'Travel',
+    gender: 'Female',
+    category: 'Development',
+    location: 'Belgrade, Serbia',
+    height: 177,
+    bust: 84,
+    waist: 60,
+    hips: 89,
+    shoe: 39,
+    hair: 'Copper',
+    eyes: 'Green',
+    portfolioCount: 4,
+  },
+  {
+    id: 'demo-18',
+    name: 'Sam Rivera',
+    slug: 'sam-rivera',
+    status: 'Available',
+    gender: 'Non-Binary',
+    category: 'Classic',
+    location: 'Mexico City, Mexico',
+    height: 178,
+    bust: 88,
+    waist: 66,
+    hips: 91,
+    shoe: 41,
+    hair: 'Dark Brown',
+    eyes: 'Hazel',
+    portfolioCount: 4,
   },
 ];
 
-/**
- * Helper pour obtenir un modèle par slug
- * Helper to get a model by slug
- */
+export const DEMO_MODELS: Model[] = DEMO_SEEDS.map(makeModel);
+
 export function getDemoModelBySlug(slug: string): Model | undefined {
   return DEMO_MODELS.find((model) => model.slug.current === slug);
 }
 
-/**
- * Helper pour vérifier si on est en mode démo
- * Helper to check if we're in demo mode
- */
 export function isDemoMode(): boolean {
-  return process.env.NEXT_PUBLIC_SANITY_PROJECT_ID === 'demo-project';
+  const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
+  return !projectId || projectId === 'demo-project';
 }

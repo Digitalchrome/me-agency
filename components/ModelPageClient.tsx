@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { urlFor } from '@/lib/sanity';
+import { MODEL_COVERS, MODEL_PORTFOLIOS } from '@/lib/demoImages';
 import type { Model } from '@/lib/types';
 import Stats from '@/components/Stats';
 
@@ -66,8 +67,19 @@ function ImageGallery({ images, modelName }: { images: any[]; modelName: string 
 export default function ModelPageClient({ model }: ModelPageClientProps) {
   const isDemoMode = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID === 'demo-project';
   const coverImageUrl = isDemoMode
-    ? `https://placehold.co/1200x1800/1a1a1a/ffffff?text=${encodeURIComponent(model.name)}`
+    ? (MODEL_COVERS[model.slug.current] ?? `https://placehold.co/1200x1800/1a1a1a/ffffff?text=${encodeURIComponent(model.name)}`)
     : urlFor(model.coverImage).width(1200).height(1800).url();
+
+  // In demo mode, use curated portfolio images from Unsplash
+  const portfolioImages = isDemoMode
+    ? ((MODEL_PORTFOLIOS[model.slug.current]?.length
+        ? MODEL_PORTFOLIOS[model.slug.current]?.map((url, i) => ({
+            _type: 'image' as const,
+            asset: { _ref: `portfolio-${i}`, _type: 'reference' as const },
+            _demoUrl: url,
+          }))
+        : model.portfolio) ?? [])
+    : model.portfolio;
 
   return (
     <div className="min-h-screen brutal-grid pt-12">
@@ -167,7 +179,7 @@ export default function ModelPageClient({ model }: ModelPageClientProps) {
                  <div className="flex-grow h-1 bg-black dark:bg-white"></div>
                  <h2 className="font-editorial text-5xl md:text-7xl font-bold uppercase tracking-tighter">Folio</h2>
               </div>
-              <ImageGallery images={model.portfolio} modelName={model.name} />
+               <ImageGallery images={portfolioImages} modelName={model.name} />
            </section>
         </div>
       </div>
