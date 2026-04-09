@@ -1,0 +1,38 @@
+{
+  "generatedAt": "2026-02-24T15:59:08.244Z",
+  "pages": [
+    "[slug]/page.tsx",
+    "about/page.tsx",
+    "admin/page.tsx",
+    "admin/submissions/bookings/page.tsx",
+    "admin/submissions/join/page.tsx",
+    "agency/page.tsx",
+    "booking/page.tsx",
+    "comp-card/[slug]/page.tsx",
+    "contact/page.tsx",
+    "discover/page.tsx",
+    "gdpr/page.tsx",
+    "join/page.tsx",
+    "journal/[slug]/page.tsx",
+    "journal/page.tsx",
+    "page.tsx",
+    "privacy/page.tsx",
+    "terms/page.tsx"
+  ],
+  "apiRoutes": [
+    "api/admin/demo/seed/route.ts",
+    "api/admin/exports/bookings.csv/route.ts",
+    "api/admin/exports/join.csv/route.ts",
+    "api/admin/submissions/bookings/[id]/route.ts",
+    "api/admin/submissions/bookings/route.ts",
+    "api/admin/submissions/join/[id]/route.ts",
+    "api/admin/submissions/join/route.ts",
+    "api/bookings/route.ts",
+    "api/demo/seed-submissions/route.ts",
+    "api/join/route.ts"
+  ],
+  "scripts": [
+    "generateDemoData.ts",
+    "indexProject.ts"
+  ]
+}

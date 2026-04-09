@@ -39,7 +39,7 @@ export default async function CompCardPage({ params }: PageProps) {
   };
 
   return (
-    <div className="bg-gray-200 dark:bg-zinc-900 min-h-screen p-8 print:p-0 print:bg-white text-black">
+    <div className="bg-gray-200 dark:bg-dark-grey min-h-screen p-8 print:p-0 print:bg-white text-black">
       <div className="w-[5.5in] h-[8.5in] bg-white shadow-lg mx-auto p-4 print:shadow-none flex flex-col gap-4">
         <div className="grid grid-cols-2 grid-rows-4 flex-grow gap-4 h-full">
           <div className="col-span-2 row-span-2 relative border-2 border-black">

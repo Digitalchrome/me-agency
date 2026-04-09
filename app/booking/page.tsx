@@ -43,8 +43,9 @@ const HOW_IT_WORKS = [
 
 export default async function BookingPage() {
   const models = await dataService.getAllModels();
-  const previewModels = (models.length > 0 ? models : DEMO_MODELS).slice(0, 6);
-  const isDemoMode = dataService.isDemoMode();
+  const usingDemoModels = models.length === 0;
+  const previewModels = (usingDemoModels ? DEMO_MODELS : models).slice(0, 6);
+  const isDemoMode = dataService.isDemoMode() || usingDemoModels;
 
   return (
     <div className="container mx-auto px-4 py-20">
@@ -93,7 +94,7 @@ export default async function BookingPage() {
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
-                    <p className="text-white font-mono text-[10px] uppercase tracking-widest">{model.name}</p>
+                    <p className="text-white font-mono text-xs uppercase tracking-widest">{model.name}</p>
                   </div>
                 </div>
               </Link>

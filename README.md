@@ -125,6 +125,9 @@ ADMIN_ACCESS_TOKEN=demo-admin
 - Export CSV:
   - `/api/admin/exports/join.csv?token=demo-admin`
   - `/api/admin/exports/bookings.csv?format=mega-db&token=demo-admin`
+- Public route/script index:
+  - `/discover`
+  - `npm run index:project` (writes `data/exports/project-index.json`)
 
 ### Local Storage Notes
 

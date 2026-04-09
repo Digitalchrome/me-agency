@@ -12,10 +12,7 @@ const TIMELINE = [
   { year: '2026', title: 'Founded in Lille', desc: 'ME Agency launches with a vision to celebrate authentic diversity.' },
   { year: '2026', title: 'First Roster', desc: '10 inaugural models representing 6 countries and 3 continents.' },
   { year: '2026', title: 'Digital Platform', desc: 'Launch of our brutalist-editorial web experience.' },
-  { year: '2027', title: 'Global Expansion', desc: 'Partnerships with agencies in Milan, London, and New York.' },
 ];
-
-const CLIENTS = ['Vogue', 'Dior', 'Balenciaga', 'Jacquemus', 'Off-White', 'Acne Studios'];
 
 const VALUES = [
   { icon: '◆', title: 'Authenticity', desc: 'Real people, real stories, no retouching of identity.' },
@@ -61,7 +58,7 @@ export default function AboutPage() {
 
       {/* Featured Image */}
       <div className="mb-32 relative">
-        <div className="aspect-[21/9] overflow-hidden border-3 border-black dark:border-white shadow-brutal">
+        <div className="aspect-[16/9] md:aspect-[21/9] overflow-hidden border-3 border-black dark:border-white shadow-brutal">
           <Image
             src={BRAND_IMAGES.aboutHero}
             alt="ME Agency brand image"
@@ -70,7 +67,7 @@ export default function AboutPage() {
             className="w-full h-full object-cover"
           />
         </div>
-        <div className="absolute -bottom-6 -right-6 bg-electric-blue text-white px-8 py-4 border-3 border-black font-mono font-bold uppercase tracking-widest shadow-brutal text-xs">
+        <div className="absolute -bottom-6 -right-6 bg-electric-blue text-white px-8 py-4 border-3 border-black dark:border-white font-mono font-bold uppercase tracking-widest shadow-brutal text-xs">
           EST. 2026
         </div>
       </div>
@@ -124,25 +121,6 @@ export default function AboutPage() {
                   {item.desc}
                 </p>
               </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Clients */}
-      <section className="mb-32">
-        <p className="font-mono text-xs uppercase tracking-[0.3em] mb-8 opacity-40">
-          Trusted By
-        </p>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-0 border-3 border-black dark:border-white">
-          {CLIENTS.map((client) => (
-            <div
-              key={client}
-              className="p-8 flex items-center justify-center border-r-2 border-b-2 border-black/20 dark:border-white/20 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors duration-300"
-            >
-              <span className="font-editorial text-xl md:text-2xl font-bold italic tracking-wider">
-                {client}
-              </span>
             </div>
           ))}
         </div>

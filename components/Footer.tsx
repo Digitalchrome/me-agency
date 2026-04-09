@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 
 /**
@@ -19,14 +17,14 @@ export default function Footer() {
               differences our strength. Leading the industry in authentic representation.
             </p>
             <div className="flex gap-4">
-              {['IG', 'TW', 'LI', 'TT'].map((social) => (
-                <div
-                  key={social}
-                  className="w-10 h-10 border-2 border-black dark:border-white flex items-center justify-center hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors cursor-pointer font-bold text-xs"
-                >
-                  {social}
-                </div>
-              ))}
+              <a
+                href="https://www.instagram.com/me_modelingagency"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 border-2 border-black dark:border-white flex items-center justify-center hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors font-bold text-xs"
+              >
+                IG
+              </a>
             </div>
           </div>
           
@@ -44,6 +42,9 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/journal" className="hover:text-black dark:hover:text-white transition-colors">Journal</Link>
+              </li>
+              <li>
+                <Link href="/discover" className="hover:text-black dark:hover:text-white transition-colors">Discover / Index</Link>
               </li>
               <li>
                 <Link href="/join" className="hover:text-black dark:hover:text-white transition-colors">Become a Model</Link>

@@ -1,6 +1,12 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import AdminGuard from '@/components/admin/AdminGuard';
 import { getSubmissionStats } from '@/lib/submissions';
+
+export const metadata: Metadata = {
+  title: 'Admin',
+  robots: { index: false, follow: false },
+};
 
 interface PageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -42,7 +48,7 @@ export default async function AdminPage({ searchParams }: PageProps) {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="border-3 border-black dark:border-white p-6 bg-light-grey dark:bg-zinc-900 shadow-brutal">
+          <div className="border-3 border-black dark:border-white p-6 bg-light-grey dark:bg-dark-grey shadow-brutal">
             <p className="font-mono text-xs uppercase tracking-widest opacity-60 mb-2">Join Applications</p>
             <p className="font-editorial text-5xl font-bold mb-4">{stats.join.total}</p>
             <div className="flex flex-wrap gap-2 mb-4">
@@ -57,7 +63,7 @@ export default async function AdminPage({ searchParams }: PageProps) {
             </Link>
           </div>
 
-          <div className="border-3 border-black dark:border-white p-6 bg-light-grey dark:bg-zinc-900 shadow-brutal">
+          <div className="border-3 border-black dark:border-white p-6 bg-light-grey dark:bg-dark-grey shadow-brutal">
             <p className="font-mono text-xs uppercase tracking-widest opacity-60 mb-2">Booking Requests</p>
             <p className="font-editorial text-5xl font-bold mb-4">{stats.bookings.total}</p>
             <div className="flex flex-wrap gap-2 mb-4">

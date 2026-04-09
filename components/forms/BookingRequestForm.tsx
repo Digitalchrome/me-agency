@@ -67,7 +67,7 @@ export default function BookingRequestForm() {
   return (
     <form
       onSubmit={onSubmit}
-      className="space-y-8 bg-light-grey dark:bg-zinc-900 p-10 md:p-12 border-3 border-black dark:border-white shadow-brutal"
+      className="space-y-8 bg-light-grey dark:bg-dark-grey p-10 md:p-12 border-3 border-black dark:border-white shadow-brutal"
     >
       <div className="hidden" aria-hidden="true">
         <label htmlFor="booking-website">Website</label>

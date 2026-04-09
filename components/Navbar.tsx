@@ -65,24 +65,21 @@ export default function Navbar() {
             ))}
           </div>
 
-          <div className="flex items-center gap-4 border-l-2 border-black/10 dark:border-white/10 pl-6">
+          <div className="flex items-center gap-4 border-l-2 border-black/20 dark:border-white/20 pl-6">
             <ThemeToggle />
-            <Link href="/join" className="hidden lg:block">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="btn-brutal-primary py-2 px-4 text-xs"
-              >
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="hidden lg:block">
+              <Link href="/join" className="btn-brutal-primary py-2 px-4 text-xs inline-block">
                 Apply Now
-              </motion.button>
-            </Link>
+              </Link>
+            </motion.div>
 
             {/* Mobile hamburger */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               className="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 group"
               aria-label="Toggle menu"
-              aria-expanded={mobileOpen ? 'true' : 'false'}
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-nav-menu"
             >
               <span
                 className={`block w-6 h-0.5 bg-black dark:bg-white transition-all duration-300 ${mobileOpen ? 'rotate-45 translate-y-2' : ''}`}
@@ -102,11 +99,12 @@ export default function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="md:hidden border-t-3 border-black dark:border-white bg-white dark:bg-dark-grey overflow-hidden"
+            id="mobile-nav-menu"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="md:hidden border-t-3 border-black dark:border-white bg-white dark:bg-dark-grey"
           >
             <div className="container mx-auto px-4 py-8 flex flex-col gap-6">
               {navLinks.map((link, i) => (

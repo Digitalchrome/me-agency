@@ -68,7 +68,6 @@ module.exports = {
         shimmer: 'shimmer 2s linear infinite',
         'slide-up': 'slide-up 0.5s ease-out',
         'fade-in': 'fade-in 0.3s ease-in',
-        float: 'float 3s ease-in-out infinite',
       },
 
       keyframes: {
@@ -91,10 +90,6 @@ module.exports = {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
         },
-        float: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-10px)' },
-        },
       },
 
       backdropBlur: {
@@ -102,8 +97,8 @@ module.exports = {
       },
 
       boxShadow: {
-        brutal: '8px 8px 0px 0px rgba(0,0,0,1)',
-        'brutal-hover': '12px 12px 0px 0px rgba(0,0,0,1)',
+        brutal: 'var(--shadow-brutal)',
+        'brutal-hover': 'var(--shadow-brutal-hover)',
         glass: '0 8px 32px 0 rgba(0, 0, 0, 0.1)',
       },
 

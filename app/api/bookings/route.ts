@@ -1,5 +1,6 @@
 import { bookingRequestSchema, saveBookingRequest } from '@/lib/submissions';
 import { jsonError, jsonOk } from '@/lib/server/http';
+import { sendBookingNotification } from '@/lib/server/email';
 
 export const runtime = 'nodejs';
 
@@ -14,6 +15,17 @@ export async function POST(request: Request) {
     }
 
     const record = await saveBookingRequest(parsed.data);
+
+    // Fire-and-forget — don't block the response on email
+    sendBookingNotification({
+      clientName: record.clientName,
+      email: record.email,
+      projectType: record.projectType,
+      projectDate: record.projectDate,
+      projectDetails: record.projectDetails,
+      budgetRange: record.budgetRange,
+      preferredModels: record.preferredModels,
+    }).catch((err) => console.error('[email] booking notification failed:', err));
 
     return jsonOk({
       id: record.id,

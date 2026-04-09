@@ -35,7 +35,7 @@ export default function DiscoverPage() {
               href={page.path}
               className="border-3 border-black dark:border-white p-5 hover:shadow-brutal hover:-translate-y-1 transition-all"
             >
-              <p className="font-mono text-[10px] uppercase tracking-widest text-electric-blue mb-2">
+              <p className="font-mono text-xs uppercase tracking-widest text-electric-blue mb-2">
                 {page.section}
               </p>
               <p className="font-editorial text-2xl font-bold">{page.title}</p>

@@ -25,8 +25,14 @@ export type JoinStatus = (typeof JOIN_STATUSES)[number];
 export type BookingStatus = (typeof BOOKING_STATUSES)[number];
 export type SubmissionSource = 'web' | 'seed';
 
-const STORAGE_DIR = path.join(process.cwd(), 'data', 'submissions');
-const EXPORT_DIR = path.join(process.cwd(), 'data', 'exports');
+// On Vercel, process.cwd() is read-only. Use /tmp for writable storage.
+// Note: /tmp is ephemeral (cleared between cold starts) — migrate to a database for permanent storage.
+const STORAGE_DIR = process.env.VERCEL
+  ? '/tmp/me-submissions'
+  : path.join(process.cwd(), 'data', 'submissions');
+const EXPORT_DIR = process.env.VERCEL
+  ? '/tmp/me-exports'
+  : path.join(process.cwd(), 'data', 'exports');
 
 const optionalTrimmed = z
   .string()

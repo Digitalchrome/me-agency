@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import Link from 'next/link';
 import { urlFor } from '@/lib/sanity';
 import { MODEL_COVERS, MODEL_PORTFOLIOS } from '@/lib/demoImages';
 import type { Model } from '@/lib/types';
@@ -45,7 +46,7 @@ function ImageGallery({ images, modelName }: { images: any[]; modelName: string 
             className={`relative overflow-hidden border-3 border-black dark:border-white group bg-light-grey dark:bg-dark-grey ${marginTop}`}
             style={{ transform: `rotate(${rotation}deg)` }}
           >
-            <div className={`aspect-[${index % 2 === 0 ? '2/3' : '1/1'}] overflow-hidden`}>
+            <div className={index % 2 === 0 ? 'aspect-[2/3] overflow-hidden' : 'aspect-square overflow-hidden'}>
               <Image
                 src={imageUrl}
                 alt={`${modelName} - Image ${index + 1}`}
@@ -54,7 +55,7 @@ function ImageGallery({ images, modelName }: { images: any[]; modelName: string 
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
             </div>
-            <div className="absolute bottom-4 right-4 font-mono text-[10px] opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="absolute bottom-4 right-4 font-mono text-xs opacity-0 group-hover:opacity-100 transition-opacity">
               P_0{index + 1}
             </div>
           </motion.div>
@@ -84,9 +85,9 @@ export default function ModelPageClient({ model }: ModelPageClientProps) {
   return (
     <div className="min-h-screen brutal-grid pt-12">
       <div className="fixed top-20 left-0 w-full pointer-events-none -z-10 opacity-[0.03] dark:opacity-[0.05] overflow-hidden">
-        <h2 className="text-[20vw] font-editorial font-bold leading-none select-none whitespace-nowrap">
+        <div aria-hidden="true" className="text-[20vw] font-editorial font-bold leading-none select-none whitespace-nowrap">
           {model.name} {model.name} {model.name}
-        </h2>
+        </div>
       </div>
 
       <div className="container mx-auto px-4">
@@ -102,10 +103,10 @@ export default function ModelPageClient({ model }: ModelPageClientProps) {
                 <h1 className="font-editorial text-7xl md:text-8xl lg:text-9xl font-bold leading-[0.8] mb-6 tracking-tighter group">
                   <span className="inline-block hover:translate-x-4 transition-transform duration-500">{model.name.split(' ')[0]}</span>
                   <br/>
-                  <span className="inline-block text-electric-blue hover:-translate-x-4 transition-transform duration-500">{model.name.split(' ')[1] || ''}</span>
+                  {model.name.split(' ')[1] && (<span className="inline-block text-electric-blue hover:-translate-x-4 transition-transform duration-500">{model.name.split(' ')[1]}</span>)}
                 </h1>
                 <p className="font-mono text-xl uppercase tracking-[0.3em] font-bold opacity-60">
-                   Portfolio Vol. {model.height}
+                   {model.category} / {model.location}
                 </p>
               </div>
 
@@ -125,7 +126,12 @@ export default function ModelPageClient({ model }: ModelPageClientProps) {
               </div>
 
               <div className="mt-12 flex gap-4">
-                 <button className="btn-brutal bg-black text-white dark:bg-white dark:text-black">Book {model.name.split(' ')[0]}</button>
+                 <Link
+                   href={`/booking?model=${encodeURIComponent(model.slug.current)}`}
+                   className="btn-brutal bg-black text-white dark:bg-white dark:text-black"
+                 >
+                   Book {model.name.split(' ')[0]}
+                 </Link>
               </div>
             </motion.div>
 

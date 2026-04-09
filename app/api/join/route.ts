@@ -1,5 +1,6 @@
 import { joinApplicationSchema, saveJoinApplication } from '@/lib/submissions';
 import { jsonError, jsonOk } from '@/lib/server/http';
+import { sendJoinNotification } from '@/lib/server/email';
 
 export const runtime = 'nodejs';
 
@@ -14,6 +15,15 @@ export async function POST(request: Request) {
     }
 
     const record = await saveJoinApplication(parsed.data);
+
+    // Fire-and-forget — don't block the response on email
+    sendJoinNotification({
+      fullName: record.fullName,
+      email: record.email,
+      location: record.location,
+      instagram: record.instagram,
+      about: record.about,
+    }).catch((err) => console.error('[email] join notification failed:', err));
 
     return jsonOk({
       id: record.id,

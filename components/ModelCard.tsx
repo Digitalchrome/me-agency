@@ -68,18 +68,18 @@ export default function ModelCard({ model, index = 0 }: ModelCardProps) {
             </div>
             
             {/* Hover info overlay */}
-            <div className="absolute bottom-0 left-0 right-0 p-8 flex flex-col gap-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-              <p className="text-white font-editorial text-3xl font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+            <div className="absolute bottom-0 left-0 right-0 p-8 flex flex-col gap-2 translate-y-4 group-hover:translate-y-0 group-focus-within:translate-y-0 transition-transform duration-500">
+              <p className="text-white font-editorial text-3xl font-bold opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-500 delay-100">
                 {model.name}
               </p>
-              <p className="text-white/70 font-mono text-sm uppercase tracking-widest translate-y-2 group-hover:translate-y-0 transition-all duration-500 delay-200">
+              <p className="text-white/70 font-mono text-sm uppercase tracking-widest translate-y-2 group-hover:translate-y-0 group-focus-within:translate-y-0 transition-all duration-500 delay-200">
                 View Portfolio →
               </p>
             </div>
           </div>
 
           {/* Info section / Section d'informations - Refined for AD 2.0 */}
-          <div className="p-6 bg-white dark:bg-dark-grey border-t-3 border-black dark:border-white transition-colors duration-300 group-hover:bg-black group-hover:text-white dark:group-hover:bg-white dark:group-hover:text-black">
+          <div className="p-6 bg-white dark:bg-dark-grey border-t-3 border-black dark:border-white transition-colors duration-300 group-hover:bg-black group-hover:text-white dark:group-hover:bg-white dark:group-hover:text-black group-focus-within:bg-black group-focus-within:text-white dark:group-focus-within:bg-white dark:group-focus-within:text-black">
             <div className="flex justify-between items-start mb-4">
                <div>
                   <h3
@@ -93,7 +93,7 @@ export default function ModelCard({ model, index = 0 }: ModelCardProps) {
                </div>
                <span className="font-editorial text-2xl italic font-light">{model.height}</span>
             </div>
-            <div className="flex justify-between items-center text-[10px] font-mono uppercase tracking-[0.3em] opacity-40 group-hover:opacity-100">
+            <div className="flex justify-between items-center text-xs font-mono uppercase tracking-[0.3em] opacity-40 group-hover:opacity-100">
               <span>{model.location}</span>
               <span>Ref: {model._id.slice(-4)}</span>
             </div>

@@ -23,9 +23,24 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   return {
     title: `${model.name} - ${model.category} Model`,
-    description: `View ${model.name}'s portfolio at ME Modeling Agency.`,
+    description: `View ${model.name}'s portfolio at ME Modeling Agency. Based in ${model.location}. ${model.category} model.`,
+    alternates: {
+      canonical: `https://me-agency.com/${slug}`,
+    },
     openGraph: {
-      images: [{ url: ogImageUrl, width: 1200, height: 630, alt: model.name }],
+      type: 'profile',
+      locale: 'en_US',
+      url: `https://me-agency.com/${slug}`,
+      title: `${model.name} — ME Modeling Agency`,
+      description: `${model.category} model based in ${model.location}. View portfolio.`,
+      siteName: 'ME Modeling Agency',
+      images: [{ url: ogImageUrl, width: 1200, height: 630, alt: `${model.name} — ME Agency` }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${model.name} — ME Agency`,
+      description: `${model.category} model based in ${model.location}.`,
+      images: [ogImageUrl],
     },
   };
 }

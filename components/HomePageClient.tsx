@@ -4,11 +4,11 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import type { Model } from '@/lib/types';
 import ModelCard from '@/components/ModelCard';
-import AnimatedSection, { StaggerContainer, StaggerItem } from '@/components/AnimatedSection';
-import CountUp from '@/components/CountUp';
+import AnimatedSection from '@/components/AnimatedSection';
 import Link from 'next/link';
 import Image from 'next/image';
 import { MODEL_COVERS } from '@/lib/demoImages';
+import { urlFor } from '@/lib/sanity';
 
 interface HomePageClientProps {
   models: Model[];
@@ -16,28 +16,6 @@ interface HomePageClientProps {
 
 /* ─── CONSTANTS / CONSTANTES ─── */
 const BRAND_TAGS = ['Inclusive', 'Authentic', 'Bold', 'Diverse', 'Global'];
-
-const STATS = [
-  { value: 10, suffix: '+', label: 'Models', sublabel: 'Worldwide' },
-  { value: 6, suffix: '', label: 'Cities', sublabel: 'Global Reach' },
-  { value: 3, suffix: '', label: 'Continents', sublabel: 'Representation' },
-  { value: 2026, suffix: '', label: 'Founded', sublabel: 'Est. Lille, FR' },
-];
-
-const CLIENTS = ['Vogue', 'Dior', 'Balenciaga', 'Jacquemus', 'Off-White', 'Acne Studios', 'Kenzo', 'Ami Paris'];
-
-const TESTIMONIALS = [
-  {
-    quote: "ME Agency represents the future of fashion — authentic, bold, and unapologetically human.",
-    author: "Marie Tessier",
-    role: "Fashion Director, Vogue France",
-  },
-  {
-    quote: "Working with ME was refreshing. Their talent doesn't just model — they tell stories.",
-    author: "Liam Chen",
-    role: "Creative Director, Studio Lumière",
-  },
-];
 
 /* ─── HERO SECTION / SECTION HÉRO ─── */
 function HeroSection() {
@@ -54,15 +32,8 @@ function HeroSection() {
     <motion.section
       ref={heroRef}
       style={{ opacity: heroOpacity, scale: heroScale, y: heroY }}
-      className="relative min-h-[100vh] flex flex-col justify-center hero-gradient text-white overflow-hidden -mx-4 -mt-12 px-4 md:px-12 lg:px-20"
+      className="relative min-h-[100vh] flex flex-col justify-center bg-black text-white overflow-hidden -mx-4 -mt-12 px-4 md:px-12 lg:px-20"
     >
-      {/* Noise overlay */}
-      <div className="absolute inset-0 opacity-[0.04] pointer-events-none z-10"
-        style={{
-          backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
-        }}
-      />
-
       {/* Decorative grid lines */}
       <div className="absolute inset-0 opacity-[0.06] pointer-events-none"
         style={{
@@ -77,7 +48,7 @@ function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="font-mono text-sm md:text-base uppercase tracking-[0.4em] text-white/60 mb-6 border-l-4 border-electric-blue pl-4"
+          className="font-mono text-sm md:text-base uppercase tracking-[0.4em] text-white/80 mb-6 border-l-4 border-electric-blue pl-4"
         >
           EST. 2026 — Lille, France
         </motion.p>
@@ -89,7 +60,7 @@ function HeroSection() {
           transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
           className="font-editorial text-[14vw] md:text-[10vw] lg:text-[8vw] font-bold leading-[0.85] mb-8 tracking-tighter"
         >
-          <span className="block text-gradient">HUMANITY&apos;S</span>
+          <span className="block text-white">HUMANITY&apos;S</span>
           <span className="block mt-2">MODELING</span>
           <span className="block mt-2">AGENCY</span>
         </motion.h1>
@@ -100,7 +71,7 @@ function HeroSection() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
-            className="md:col-span-5 text-lg md:text-xl text-white/70 leading-relaxed italic font-editorial"
+            className="md:col-span-5 text-lg md:text-xl text-white/80 leading-relaxed italic font-editorial"
           >
             &ldquo;Celebrating the raw, authentic beauty of every human being. 
             Making our differences our greatest strength.&rdquo;
@@ -149,7 +120,7 @@ function HeroSection() {
           </a>
           <Link
             href="/agency"
-            className="font-mono text-sm uppercase tracking-[0.2em] text-white/50 hover:text-white transition-colors"
+            className="font-mono text-sm uppercase tracking-[0.2em] text-white/70 hover:text-white transition-colors"
           >
             Learn More →
           </Link>
@@ -158,12 +129,13 @@ function HeroSection() {
 
       {/* Scroll indicator / Indicateur de défilement */}
       <motion.div
+        aria-hidden="true"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2"
       >
-        <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/40">Scroll</span>
+        <span className="font-mono text-xs uppercase tracking-[0.3em] text-white/60">Scroll</span>
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 1.5, repeat: Infinity }}
@@ -222,35 +194,6 @@ function AboutTeaser() {
   );
 }
 
-/* ─── STATS SECTION / SECTION STATISTIQUES ─── */
-function StatsSection() {
-  return (
-    <AnimatedSection className="py-20">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-0 border-3 border-black dark:border-white">
-        {STATS.map((stat, i) => (
-          <div
-            key={stat.label}
-            className="p-8 md:p-12 text-center border-r-2 border-b-2 last:border-r-0 border-black/20 dark:border-white/20 group hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors duration-300"
-          >
-            <CountUp
-              end={stat.value}
-              suffix={stat.suffix}
-              duration={2 + i * 0.3}
-              className="font-editorial text-4xl md:text-6xl font-bold block mb-1"
-            />
-            <p className="font-mono text-xs uppercase tracking-[0.3em] font-bold opacity-80 group-hover:opacity-100">
-              {stat.label}
-            </p>
-            <p className="font-mono text-[10px] uppercase tracking-[0.2em] opacity-40 group-hover:opacity-80 mt-1">
-              {stat.sublabel}
-            </p>
-          </div>
-        ))}
-      </div>
-    </AnimatedSection>
-  );
-}
-
 /* ─── MODEL GRID / GRILLE DE MODÈLES ─── */
 function ModelGrid({ models }: { models: Model[] }) {
   if (!models || models.length === 0) {
@@ -294,7 +237,7 @@ function FeaturedModelStrip({ models }: { models: Model[] }) {
           const imageUrl = isDemoMode
             ? (MODEL_COVERS[model.slug.current] ??
               `https://placehold.co/560x840/1a1a1a/ffffff?text=${encodeURIComponent(model.name)}`)
-            : '';
+            : urlFor(model.coverImage).width(560).height(840).url();
           return (
             <AnimatedSection key={model._id} delay={i * 0.15} className="flex-shrink-0 w-[280px]">
               <Link href={`/${model.slug.current}`} className="block group">
@@ -322,48 +265,40 @@ function FeaturedModelStrip({ models }: { models: Model[] }) {
   );
 }
 
-/* ─── CLIENTS MARQUEE / DÉFILEMENT CLIENTS ─── */
-function ClientsMarquee() {
+/* ─── MANIFESTO SECTION / SECTION MANIFESTE ─── */
+function ManifestoSection() {
   return (
-    <AnimatedSection className="py-16">
-      <p className="font-mono text-xs uppercase tracking-[0.3em] text-center opacity-40 mb-8">
-        Trusted By Industry Leaders
-      </p>
-      <div className="border-y-3 border-black dark:border-white overflow-hidden">
-        <div className="flex whitespace-nowrap animate-marquee py-8">
-          {[...CLIENTS, ...CLIENTS, ...CLIENTS].map((client, i) => (
-            <span
-              key={`${client}-${i}`}
-              className="font-editorial text-3xl md:text-5xl italic font-bold uppercase tracking-wider mx-12 opacity-20 hover:opacity-100 transition-opacity duration-300"
-            >
-              {client}
-            </span>
+    <AnimatedSection className="py-24">
+      <div className="border-3 border-black dark:border-white grid grid-cols-1 md:grid-cols-2">
+        {/* Left: headline */}
+        <div className="p-12 md:p-16 bg-black text-white">
+          <p className="font-mono text-xs uppercase tracking-[0.4em] text-electric-blue mb-6">
+            EST. 2026 — LILLE, FRANCE
+          </p>
+          <h2 className="font-editorial text-4xl md:text-5xl font-bold leading-tight mb-6">
+            The fashion world has rules.{' '}
+            <span className="text-electric-blue">We&apos;re rewriting them.</span>
+          </h2>
+          <div className="w-12 h-[2px] bg-electric-blue mb-6" />
+          <p className="font-mono text-sm text-white/60 leading-relaxed max-w-sm">
+            ME was born in 2026 with one belief: beauty has no single shape, shade, or size.
+            We represent the models the industry forgot — and the ones it hasn&apos;t discovered yet.
+          </p>
+        </div>
+        {/* Right: value props */}
+        <div className="p-12 md:p-16 border-l-0 md:border-l-3 border-t-3 md:border-t-0 border-black dark:border-white flex flex-col gap-8 justify-center">
+          {[
+            { label: 'FRESH PERSPECTIVE', text: 'No legacy bias. No outdated beauty standards. Just the world as it actually looks.' },
+            { label: 'REAL OPPORTUNITY', text: 'Be among the first brands to build something meaningful with us — at the ground floor.' },
+            { label: 'BEYOND FASHION', text: 'Our talent spans editorial, commercial, social, and lifestyle — the full spectrum of human beauty.' },
+          ].map(({ label, text }) => (
+            <div key={label} className="border-l-2 border-electric-blue pl-5">
+              <p className="font-mono text-xs uppercase tracking-[0.3em] text-electric-blue mb-2">{label}</p>
+              <p className="font-mono text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{text}</p>
+            </div>
           ))}
         </div>
       </div>
-    </AnimatedSection>
-  );
-}
-
-/* ─── TESTIMONIALS / TÉMOIGNAGES ─── */
-function Testimonials() {
-  return (
-    <AnimatedSection className="py-24">
-      <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-8" staggerDelay={0.2}>
-        {TESTIMONIALS.map((t, i) => (
-          <StaggerItem key={i}>
-            <div className="p-10 md:p-12 border-3 border-black dark:border-white bg-light-grey dark:bg-dark-grey hover:shadow-brutal hover:-translate-y-2 transition-all duration-300">
-              <p className="font-editorial text-xl md:text-2xl italic leading-relaxed mb-8">
-                &ldquo;{t.quote}&rdquo;
-              </p>
-              <div className="border-t-2 border-black/20 dark:border-white/20 pt-4">
-                <p className="font-mono text-sm font-bold uppercase tracking-widest">{t.author}</p>
-                <p className="font-mono text-xs uppercase tracking-widest opacity-50 mt-1">{t.role}</p>
-              </div>
-            </div>
-          </StaggerItem>
-        ))}
-      </StaggerContainer>
     </AnimatedSection>
   );
 }
@@ -439,23 +374,17 @@ export default function HomePageClient({ models }: HomePageClientProps) {
         {/* About Teaser — Brand story */}
         <AboutTeaser />
 
-        {/* Stats — Key numbers */}
-        <StatsSection />
-
         {/* Featured Faces — Top models strip */}
         <FeaturedModelStrip models={models} />
 
-        {/* Clients — Industry trust */}
-        <ClientsMarquee />
+        {/* Manifesto — Brand vision & values */}
+        <ManifestoSection />
       </div>
 
       {/* Manifesto Marquee */}
       <ManifestoMarquee />
 
       <div className="container mx-auto px-4">
-        {/* Testimonials */}
-        <Testimonials />
-
         {/* Full Roster */}
         <AnimatedSection className="py-20" id="roster">
           <div className="flex justify-between items-end mb-16 border-b-3 border-black dark:border-white pb-6">

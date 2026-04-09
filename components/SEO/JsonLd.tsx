@@ -7,7 +7,7 @@ export default function JsonLd() {
     '@type': 'Organization',
     name: 'ME Modeling Agency',
     url: 'https://me-agency.com',
-    logo: 'https://me-agency.com/logo.png',
+    logo: 'https://me-agency.com/icon.png',
     description: "Humanity's modeling agency. Celebrating diversity and making differences our strength.",
     address: {
       '@type': 'PostalAddress',
@@ -16,9 +16,7 @@ export default function JsonLd() {
       addressCountry: 'FR',
     },
     sameAs: [
-      'https://instagram.com/me_agency',
-      'https://twitter.com/me_agency',
-      'https://linkedin.com/company/me-agency',
+      'https://www.instagram.com/me_modelingagency',
     ],
   };
 

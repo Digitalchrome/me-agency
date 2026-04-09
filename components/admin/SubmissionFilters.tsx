@@ -16,7 +16,7 @@ export default function SubmissionFilters({
   countsByStatus: CountMap;
 }) {
   return (
-    <form method="get" action={action} className="border-3 border-black dark:border-white p-4 md:p-6 bg-light-grey dark:bg-zinc-900">
+    <form method="get" action={action} className="border-3 border-black dark:border-white p-4 md:p-6 bg-light-grey dark:bg-dark-grey">
       <input type="hidden" name="token" value={token} />
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
         <div className="flex flex-col gap-2">

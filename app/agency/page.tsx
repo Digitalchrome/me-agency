@@ -1,26 +1,12 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { TEAM_PHOTOS, BRAND_IMAGES } from '@/lib/demoImages';
+import { BRAND_IMAGES } from '@/lib/demoImages';
 
 export const metadata: Metadata = {
   title: 'The Agency',
   description: 'ME Modeling Agency — Redefining beauty standards from Lille to the world. Learn about our mission, team, and philosophy.',
 };
-
-const STATS = [
-  { value: '10+', label: 'Models' },
-  { value: '6', label: 'Cities' },
-  { value: '2026', label: 'Founded' },
-  { value: '∞', label: 'Perspectives' },
-];
-
-const TEAM = [
-  { name: 'Gabriel Laurent', role: 'Founder & Creative Director', city: 'Lille' },
-  { name: 'Camille Dubois', role: 'Head of Talent', city: 'Paris' },
-  { name: 'Marcus Williams', role: 'Booking Director', city: 'London' },
-  { name: 'Sofia Rossi', role: 'Digital Strategy', city: 'Milan' },
-];
 
 export default function AgencyPage() {
   return (
@@ -72,58 +58,6 @@ export default function AgencyPage() {
           </div>
         </div>
       </div>
-
-      {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-0 border-3 border-black dark:border-white mb-32">
-        {STATS.map((stat) => (
-          <div
-            key={stat.label}
-            className="p-8 md:p-12 border-r-3 border-b-3 border-black dark:border-white last:border-r-0 text-center group hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors duration-300"
-          >
-            <p className="font-editorial text-5xl md:text-7xl font-bold mb-2">{stat.value}</p>
-            <p className="font-mono text-xs uppercase tracking-[0.3em] opacity-60 group-hover:opacity-100">
-              {stat.label}
-            </p>
-          </div>
-        ))}
-      </div>
-
-      {/* Team */}
-      <section className="mb-32">
-        <div className="flex items-center gap-8 mb-16">
-          <h2 className="font-editorial text-5xl md:text-7xl font-bold uppercase tracking-tighter">
-            The Team
-          </h2>
-          <div className="flex-grow h-1 bg-black dark:bg-white" />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {TEAM.map((member) => (
-            <div
-              key={member.name}
-              className="group border-3 border-black dark:border-white overflow-hidden hover:shadow-brutal transition-all duration-300 hover:-translate-y-2"
-            >
-              <div className="aspect-square overflow-hidden bg-light-grey dark:bg-dark-grey">
-                <Image
-                  src={TEAM_PHOTOS[member.name.split(' ')[0] ?? member.name] ?? `https://placehold.co/600x600/2c2c2c/ffffff?text=${encodeURIComponent(member.name.split(' ')[0] ?? member.name)}`}
-                  alt={member.name}
-                  width={600}
-                  height={600}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-              </div>
-              <div className="p-6 bg-white dark:bg-dark-grey group-hover:bg-black group-hover:text-white dark:group-hover:bg-white dark:group-hover:text-black transition-colors duration-300">
-                <h3 className="font-editorial text-xl font-bold">{member.name}</h3>
-                <p className="font-mono text-xs uppercase tracking-widest opacity-60 mt-1">
-                  {member.role}
-                </p>
-                <p className="font-mono text-xs uppercase tracking-widest opacity-40 mt-1">
-                  {member.city}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
 
       {/* Cities */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 border-t-3 border-black dark:border-white pt-12">

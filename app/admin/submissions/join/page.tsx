@@ -1,10 +1,16 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import AdminGuard from '@/components/admin/AdminGuard';
 import StatusBadge from '@/components/admin/StatusBadge';
 import StatusUpdateForm from '@/components/admin/StatusUpdateForm';
 import SubmissionFilters from '@/components/admin/SubmissionFilters';
 import SubmissionsTable from '@/components/admin/SubmissionsTable';
 import { JOIN_STATUSES, listJoinApplications } from '@/lib/submissions';
+
+export const metadata: Metadata = {
+  title: 'Admin Join Queue',
+  robots: { index: false, follow: false },
+};
 
 interface PageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;

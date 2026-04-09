@@ -99,22 +99,20 @@ export default function JournalPage() {
         ))}
       </div>
 
-      {/* Newsletter CTA */}
+      {/* Instagram CTA */}
       <div className="border-3 border-black dark:border-white p-12 md:p-20 text-center bg-black text-white dark:bg-white dark:text-black">
-        <p className="font-editorial text-3xl md:text-5xl font-bold italic mb-4">Stay in the loop</p>
+        <p className="font-editorial text-3xl md:text-5xl font-bold italic mb-4">Follow the story</p>
         <p className="font-mono text-xs uppercase tracking-[0.3em] opacity-60 mb-8">
-          Subscribe to the ME Journal for stories, editorials, and announcements
+          Stories, editorials, and announcements — follow us on Instagram
         </p>
-        <div className="flex gap-0 max-w-md mx-auto">
-          <input
-            type="email"
-            placeholder="YOUR@EMAIL.COM"
-            className="flex-grow px-4 py-3 bg-transparent border-3 border-white dark:border-black font-mono text-xs uppercase tracking-widest focus:outline-none focus:border-electric-blue"
-          />
-          <button className="px-6 py-3 bg-white text-black dark:bg-black dark:text-white border-3 border-white dark:border-black font-mono text-xs font-bold uppercase tracking-widest hover:bg-electric-blue hover:text-white hover:border-electric-blue transition-colors">
-            Subscribe
-          </button>
-        </div>
+        <a
+          href="https://www.instagram.com/me_modelingagency"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block px-10 py-4 bg-white text-black dark:bg-black dark:text-white border-3 border-white dark:border-black font-mono text-sm font-bold uppercase tracking-[0.3em] hover:bg-electric-blue hover:text-white hover:border-electric-blue transition-colors"
+        >
+          @me_modelingagency
+        </a>
       </div>
     </div>
   );
