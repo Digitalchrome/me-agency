@@ -216,7 +216,8 @@ function ModelGrid({ models }: { models: Model[] }) {
 /* ─── FEATURED MODEL STRIP / BANDE MODÈLE EN VEDETTE ─── */
 function FeaturedModelStrip({ models }: { models: Model[] }) {
   const featured = models.slice(0, 4);
-  const isDemoMode = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID === 'demo-project';
+  const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
+  const isDemoMode = !projectId || projectId === 'demo-project';
 
   return (
     <AnimatedSection className="py-20 overflow-hidden">
